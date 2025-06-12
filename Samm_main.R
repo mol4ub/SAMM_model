@@ -330,36 +330,39 @@ SAMMv1 <- function(Time, State, Pars, Weather){
 parameters <- c(
   
   # [Turnover Rates]
-  k_STR	= 0.0024,	  # Depolimerisation of Structural litter (d-1 kgC-1)
-  k_LAB	= 0.0225,	    # Depolimerisation of Metabolic litter (d-1 kgC-1)
-  m_MIC =	0.00035,    # Microbial maintainance respiration	(d-1)
-  k_MIC	= 0.0046,	          # Microbial death respiration	(d-1)
-  mu_max	= 0.24,        # Maximum daily uptake by microbes	(d-1 kgC-1) from WANG 2013 MEND MODEL
-  KmLMW_C	= 0.044,                #	LMW_C half saturation constant (kgC ha-1) estimated half saturation constant
-  K_M_MIC_C	= 35.5,               #	MIC halt saturation constent (kgC ha-1) estimated half saturation constant
-  kAgg =	0.0316,               #	kAgg decomposition rate (d-1)
-  k_MAO =	0.00044,	            # MAOM decompositions rate (d-1)
+  k_STR	= 0.0031,	  # Depolimerisation of Structural litter (d-1 kgC-1)
+  k_LAB	= 0.0366,	    # Depolimerisation of Metabolic litter (d-1 kgC-1)
+  k_MIC	= 0.007,	          # Microbial death respiration	(d-1)
+  k_MAO =	0.0041,	            # MAOM decompositions rate (d-1)
+  mu_max	= 0.337,        # Maximum daily uptake by microbes	(d-1 kgC-1) from WANG 2013 MEND MODEL
+  kAgg =	0.0323,               #	kAgg decomposition rate (d-1)
+  K_M_MIC_C	= 66.8,               #	MIC halt saturation constent (kgC ha-1) estimated half saturation constant
+  m_MIC =	0.00064,    # Microbial maintainance respiration	(d-1)
+  K_LMW_MAO = 0.018,
+  c_SORP = 0.049, # new value based on Georgiou et al. (2025) for 1:1 clay minerals
+  
   
   # [CUEs]		
   CUE_STR =	0.65,	
-  CUE_LAB	= 0.54,	
+  CUE_LAB	= 0.73,	
   CUE_LMW	= 0.6,	
   
   #[other parameters]		
-  f_MICMAOM	= 0.23,	
+  MicMinCN = 5.72,
+  MicMaxCN = 7.77,
+  f_MICMAOM	= 0.21,	
   #BiAC_release_per_growth	= 0.01,	
-  pc_STR_LAB	= 2.47,	 # (g g-1)
-  aggfactSTR_C = 0.71,                                # (g C g-1)
-  aggfactMAO_C =	2.70,	                             # (g C g-1)
+  pc_STR_LAB	= 2.54,	 # (g g-1)
+  aggfactSTR_C = 1.16,                                # (g C g-1)
+  aggfactMAO_C =	1.57,	                             # (g C g-1)
+  NonMicAgg = 32.5, # in equivalent of soil mic growth in kg C /ha
   #PolyphenolProtectionCapacity= 1,	                   # (g N/g C)
-  Daily_Litter_C =	3.07,	                               # kgC ha-1 d-1
-  Daily_Litter_CN	= 159.3,	                               # kgC ha-1 d-1
-  Daily_LitterSTR_C	= 0.13,	                 # kgC ha-1 d-1
-  MicMinCN = 5.0,
-  MicMaxCN = 10.1,
-  K_LMW_MAO = 0.045,
+  Daily_Litter_C =	2.28,	                               # kgC ha-1 d-1
+  Daily_Litter_CN	= 142.9,	                               # kgC ha-1 d-1
+  Daily_LitterSTR_C	= 0.16,	                 # kgC ha-1 d-1
+
   #KMaoc_to_DocDesorption = 0.001,
-  NonMicAgg = 30.9, # in equivalent of soil mic growth in kg C /ha
+
   
   #[Added litter values]	# Groundnut	
   LitterC	= 3880,	#kg C/ha
@@ -428,9 +431,9 @@ yini
 
 
 
-parameters["MAO_C_max"] = parameters["simulated_depth"] * (parameters["bulk_density"] * 1000) * (parameters["si_cl"] * 100) * 0.86
-# according to Abramoff 2022: depth(m)  *  BD (kg m-3) %claysilt (%) pc (coefficient)
-parameters["MAO_C_max"] #Ok, there was one numerical error, so the capacity was only 1/10th of what it should have been # SOLVED
+# Corrected equation for MAO_C_max
+parameters["MAO_C_max"]=as.double(parameters["simulated_depth"]) * (parameters["bulk_density"]*1000 * 10000)* as.double((parameters["si_cl"]))* as.double((parameters["c_SORP"]))
+
 
 
 
@@ -446,37 +449,8 @@ TimesBeforeApplying <-(c(1,382,759,1125,1490,1874,2231,2596,2961,3323,3688,4049,
 
 
 
-
-#PMbest<-read.csv("../../SIR_SAMM/BC_graphs_small_litter230522/SAMM_no_litter_in_SOC_new_litter_prior230516only100k/param.matBestSim.csv", sep=";")
-
-
 for(i in 1:1){
-  # parameters["k_STR"] <- PMbest[1]
-  # parameters["k_LAB"] <- PMbest[2]
-  # parameters["m_MIC"] <- PMbest[3]
-  # parameters["k_MIC"] <- PMbest[4]
-  # parameters["mu_max"] <- PMbest[5]
-  # parameters["KmLMW_C"] <- PMbest[6]
-  # parameters["K_M_MIC_C"] <- PMbest[7]
-  # parameters["kAgg"] <- PMbest[8]
-  # parameters["k_MAO"] <- PMbest[9]
-  # 
-  # parameters["CUE_STR"] <- PMbest[10]
-  # parameters["CUE_LAB"] <- PMbest[11]
-  # 
-  # parameters["f_MICMAOM"] <- PMbest[12]
-  # parameters["pc_STR_LAB"] <- PMbest[13]
-  # parameters["aggfactSTR_C"] <- PMbest[14]
-  # parameters["aggfactMAO_C"] <- PMbest[15]
-  # parameters["Daily_Litter_C"] <- PMbest[16]
-  # parameters["Daily_Litter_CN"] <- PMbest[17]
-  # parameters["Daily_LitterSTR_C"] <- PMbest[18]
-  # parameters["MicMinCN"] <- PMbest[19]
-  # parameters["MicMaxCN"] <- PMbest[20]
-  # parameters["K_LMW_MAO"] <- PMbest[21]
-  # parameters["NonMicAgg"] <- PMbest[22]
-  
-  
+
   parsGN<-parameters
   
   parsCT<-parameters
