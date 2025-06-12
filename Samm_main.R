@@ -330,21 +330,21 @@ SAMMv1 <- function(Time, State, Pars, Weather){
 parameters <- c(
   
   # [Turnover Rates]
-  k_STR	= 0.0031,	  # Depolimerisation of Structural litter (d-1 kgC-1)
-  k_LAB	= 0.0366,	    # Depolimerisation of Metabolic litter (d-1 kgC-1)
-  k_MIC	= 0.007,	          # Microbial death respiration	(d-1)
-  k_MAO =	0.0041,	            # MAOM decompositions rate (d-1)
-  mu_max	= 0.337,        # Maximum daily uptake by microbes	(d-1 kgC-1) from WANG 2013 MEND MODEL
-  kAgg =	0.0323,               #	kAgg decomposition rate (d-1)
-  K_M_MIC_C	= 66.8,               #	MIC halt saturation constent (kgC ha-1) estimated half saturation constant
-  m_MIC =	0.00064,    # Microbial maintainance respiration	(d-1)
-  K_LMW_MAO = 0.018,
-  c_SORP = 0.049, # new value based on Georgiou et al. (2025) for 1:1 clay minerals
+  k_STR	= 0.0031, # Depolimerisation of Structural litter (d-1 kgC-1)
+  k_LAB	= 0.0366, # Depolimerisation of Metabolic litter (d-1 kgC-1)
+  k_MIC	= 0.007, # Microbial death respiration	(d-1)
+  k_MAO =	0.00041, # MAOM decompositions rate (d-1)
+  mu_max	= 0.337, # Maximum daily uptake by microbes	(d-1 kgC-1) from WANG 2013 MEND MODEL
+  kAgg =	0.0323, #	kAgg decomposition rate (d-1)
+  K_M_MIC_C	= 66.8, #	MIC halt saturation constent (kgC ha-1) estimated half saturation constant
+  m_MIC =	0.00064, # Microbial maintainance respiration	(d-1)
+  K_LMW_MAO = 0.018, # Specific adsorption rate of LMW to MAOM (g g-1 d-1) 
+  c_SORP = 0.049, # Sorption capacity (kg kg-1 SiCl) new value based on Georgiou et al. (2025) for 1:1 clay minerals
   
   
   # [CUEs]		
-  CUE_STR =	0.65,	
-  CUE_LAB	= 0.73,	
+  CUE_STR =	0.57,	
+  CUE_LAB	= 0.51,	
   CUE_LMW	= 0.6,	
   
   #[other parameters]		
@@ -352,14 +352,14 @@ parameters <- c(
   MicMaxCN = 7.77,
   f_MICMAOM	= 0.21,	
   #BiAC_release_per_growth	= 0.01,	
-  pc_STR_LAB	= 2.54,	 # (g g-1)
-  aggfactSTR_C = 1.16,                                # (g C g-1)
-  aggfactMAO_C =	1.57,	                             # (g C g-1)
+  pc_STR_LAB	= 2.54,	# (g g-1)
+  aggfactSTR_C = 1.16, # (g C g-1)
+  aggfactMAO_C =	1.57, # (g C g-1)
   NonMicAgg = 32.5, # in equivalent of soil mic growth in kg C /ha
-  #PolyphenolProtectionCapacity= 1,	                   # (g N/g C)
-  Daily_Litter_C =	2.28,	                               # kgC ha-1 d-1
-  Daily_Litter_CN	= 142.9,	                               # kgC ha-1 d-1
-  Daily_LitterSTR_C	= 0.16,	                 # kgC ha-1 d-1
+  #PolyphenolProtectionCapacity= 1, # (g N/g C)
+  Daily_Litter_C =	2.28, # kgC ha-1 d-1
+  Daily_Litter_CN	= 142.9, # kgC ha-1 d-1
+  Daily_LitterSTR_C	= 0.16, # kgC ha-1 d-1
 
   #KMaoc_to_DocDesorption = 0.001,
 
@@ -515,7 +515,7 @@ ggplot() +
   scale_color_viridis_d()
 
 
-
+ggsave("SAMM_Carbon.png", width = 20, height = 15, units = "cm", dpi = 300)
 
 
 
